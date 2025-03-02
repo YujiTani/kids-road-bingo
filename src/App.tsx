@@ -12,6 +12,7 @@ function App() {
   const mapRef = useRef<HTMLDivElement>(null)
   const [origin, setOrigin] = useState<Position | null>(null)
   const [destination, setDestination] = useState<Position | null>(null)
+  const [map, setMap] = useState<google.maps.Map | null>(null)
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -36,7 +37,8 @@ function App() {
         const { Map } = await loader.importLibrary("maps") as google.maps.MapsLibrary;
         if (!mapRef.current) return;
 
-        const map = new Map(mapRef.current, mapOptions);
+        const newMap = new Map(mapRef.current, mapOptions);
+        setMap(newMap);
 
         if (!navigator.geolocation) {
           console.log("Geolocation is not supported by this browser.");
@@ -51,20 +53,20 @@ function App() {
             }
             setOrigin(userLocation)
 
-            map.setCenter(userLocation)
+            newMap.setCenter(userLocation)
 
             // マーカーのライブラリをインポート
             const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
             new AdvancedMarkerElement({
-              map: map,
+              map: newMap,
               position: userLocation,
             })
           }
         )
 
         // クリックイベントを追加
-        map.addListener('click', async (event: google.maps.MapMouseEvent) => {
+        newMap.addListener('click', async (event: google.maps.MapMouseEvent) => {
           const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
           if (!event.latLng) return
@@ -75,7 +77,7 @@ function App() {
           }
           setDestination(clickPosition)
           new AdvancedMarkerElement({
-            map: map,
+            map: newMap,
             position: clickPosition,
             title: "目的地"
           })
@@ -91,6 +93,11 @@ function App() {
 
   // 現在地と目的地の入力を監視し、ルート情報を取得する
   useEffect(() => {
+    if (!map) {
+      console.log("マップが初期化されていません")
+      return
+    }
+
     if (!origin || !destination) {
       console.log("現在地もしくは目的地が設定されていません")
       return
@@ -98,9 +105,11 @@ function App() {
 
     const fetchRouteInfo = async () => {
       try {
-        const { DirectionsService } = await google.maps.importLibrary("routes") as google.maps.RoutesLibrary;
-
+        const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes") as google.maps.RoutesLibrary;
         const directionsService = new DirectionsService();
+        const directionsRenderer = new DirectionsRenderer();
+        
+        directionsRenderer.setMap(map);
         
         directionsService.route(
           {
@@ -110,7 +119,8 @@ function App() {
           },
           (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
-              console.log(result);
+              // ルート情報をレンダラーに設定して描画
+              directionsRenderer.setDirections(result);
             } else {
               console.error(`ルート検索に失敗しました: ${status}`);
             }
@@ -121,10 +131,8 @@ function App() {
       }
     }
 
-    if (origin && destination) {
-      fetchRouteInfo()
-    }
-  }, [origin, destination])
+    fetchRouteInfo()
+  }, [origin, destination, map])
 
   return <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />;
 }
