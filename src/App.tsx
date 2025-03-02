@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useRef} from 'react'
+import { Loader } from '@googlemaps/js-api-loader'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const mapRef = useRef<HTMLDivElement>(null)
+  
+  useEffect(() => {
+    if (!mapRef.current) return
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const initMap = async () => {
+      const loader = new Loader({
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+        version: "weekly",
+        libraries: ["places"]
+      })
+
+      const mapOptions = {
+        center: {
+          lat: 35.6812,
+          lng: 139.7671
+        },
+        zoom: 13
+      };
+
+      try {
+        const { Map } = await loader.importLibrary("maps") as google.maps.MapsLibrary;
+        if (!mapRef.current) return;
+
+        const map = new Map(mapRef.current, mapOptions);
+        console.log("マップが正常に読み込まれました", map);
+      } catch (error) {
+        console.error("マップの読み込み中にエラーが発生しました", error);
+      }
+    }
+
+    initMap()
+  }, [mapRef])
+
+  return <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />;
 }
 
 export default App
