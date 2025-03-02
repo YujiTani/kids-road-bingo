@@ -21,7 +21,8 @@ function App() {
           lat: 35.6812,
           lng: 139.7671
         },
-        zoom: 13
+        zoom: 13,
+        mapId: "map"
       };
 
       try {
@@ -29,7 +30,37 @@ function App() {
         if (!mapRef.current) return;
 
         const map = new Map(mapRef.current, mapOptions);
-        console.log("マップが正常に読み込まれました", map);
+
+        if (!navigator.geolocation) {
+          console.log("Geolocation is not supported by this browser.");
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const  userLocation ={
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+
+            map.setCenter(userLocation)
+
+                  // マーカーのライブラリをインポート
+            const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+
+            new AdvancedMarkerElement({
+              map: map,
+              position: userLocation,
+              title: "Your Location"
+            })
+
+          }
+        )
+
+        //   const position = navigator.geolocation.getCurrentPosition
+        //   console.log("c=========🚀 ~ initMap ~ position:", position)
+        // }
+
       } catch (error) {
         console.error("マップの読み込み中にエラーが発生しました", error);
       }
