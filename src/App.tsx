@@ -56,9 +56,14 @@ function App() {
 
         navigator.geolocation.getCurrentPosition(
           async (position) => {
+            // const userLocation: Position = {
+            //   lat: position.coords.latitude,
+            //   lng: position.coords.longitude
+            // }
+            // debug用
             const userLocation: Position = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
+              lat: 35.6812,
+              lng: 139.7671
             }
             setOrigin(userLocation)
 
@@ -97,15 +102,8 @@ function App() {
 
   // 現在地と目的地の入力を監視し、ルート情報を取得する
   useEffect(() => {
-    if (!map) {
-      console.log("マップが初期化されていません")
-      return
-    }
-
-    if (!origin || !destination) {
-      console.log("現在地もしくは目的地が設定されていません")
-      return
-    }
+    if (!map) return
+    if (!origin || !destination) return
 
     const fetchRouteInfo = async () => {
       try {
