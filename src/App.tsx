@@ -172,6 +172,15 @@ function App() {
     }
   };
 
+  const handleShowProgressBar = () => {
+    if (mapRef.current) {
+      mapRef.current.style.display = 'none';
+    }
+
+    console.log('プログレッシブバーを表示', routeInfo)
+    handleClosePopup()
+  }
+
   return (
     <>
       <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
@@ -251,7 +260,7 @@ function App() {
             gap: '8px'
           }}>
             <button 
-              onClick={handleClosePopup}
+              onClick={handleShowProgressBar}
               style={{
                 flex: 1,
                 padding: '8px 16px',
