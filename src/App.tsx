@@ -8,11 +8,20 @@ type Position = {
   lng: number
 }
 
+type RouteInfo = {
+  distance: string;
+  duration: string;
+  showPopup: boolean;
+}
+
 function App() {
   const mapRef = useRef<HTMLDivElement>(null)
   const [origin, setOrigin] = useState<Position | null>(null)
   const [destination, setDestination] = useState<Position | null>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
+  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null)
+  const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null)
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -58,29 +67,24 @@ function App() {
             // マーカーのライブラリをインポート
             const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
-            new AdvancedMarkerElement({
+            const marker = new AdvancedMarkerElement({
               map: newMap,
               position: userLocation,
+              title: 'origin',
             })
+            setMarkers(markers.set("origin", marker))
           }
         )
 
         // クリックイベントを追加
         newMap.addListener('click', async (event: google.maps.MapMouseEvent) => {
-          const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
-
           if (!event.latLng) return
-
+          
           const clickPosition: Position = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
           }
           setDestination(clickPosition)
-          new AdvancedMarkerElement({
-            map: newMap,
-            position: clickPosition,
-            title: "目的地"
-          })
         })
 
       } catch (error) {
@@ -89,7 +93,7 @@ function App() {
     }
 
     initMap()
-  }, [mapRef])
+  }, [mapRef, markers])
 
   // 現在地と目的地の入力を監視し、ルート情報を取得する
   useEffect(() => {
@@ -110,6 +114,7 @@ function App() {
         const directionsRenderer = new DirectionsRenderer();
         
         directionsRenderer.setMap(map);
+        setDirectionsRenderer(directionsRenderer)
         
         directionsService.route(
           {
@@ -119,8 +124,27 @@ function App() {
           },
           (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
-              // ルート情報をレンダラーに設定して描画
               directionsRenderer.setDirections(result);
+              
+              // ルート表示中はマーカーを非表示にする
+              const marker = markers.get("origin")
+              if (marker) {
+                marker.map = null
+              }
+
+              const route = result?.routes[0];
+              if (!route) return
+              const leg = route.legs[0];
+              
+              const distance = leg.distance?.text;
+              const duration = leg.duration?.text;
+              
+              // ルート情報をstateに保存
+              setRouteInfo({
+                distance: distance || '',
+                duration: duration || '',
+                showPopup: true
+              });
             } else {
               console.error(`ルート検索に失敗しました: ${status}`);
             }
@@ -132,9 +156,143 @@ function App() {
     }
 
     fetchRouteInfo()
-  }, [origin, destination, map])
+  }, [origin, destination, map, markers])
 
-  return <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />;
+  // ポップアップを閉じる関数
+  const handleClosePopup = async () => {
+    setRouteInfo(prev => prev ? { ...prev, showPopup: false } : null);
+    // マーカーを表示する
+    const marker = markers.get("origin")
+    if (marker) {
+      marker.map = map
+    }
+
+    if (directionsRenderer) {
+      directionsRenderer.setMap(null)
+    }
+  };
+
+  return (
+    <>
+      <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+      {routeInfo?.showPopup && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: 'white',
+          padding: '16px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+          zIndex: 1000,
+          maxWidth: '300px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px'
+          }}>
+            <h3 style={{
+              margin: 0,
+              fontSize: '16px',
+              fontWeight: 600,
+              color: '#333'
+            }}>ルート情報</h3>
+            <button 
+              onClick={handleClosePopup}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '20px',
+                cursor: 'pointer',
+                color: '#666',
+                padding: '0 4px'
+              }}
+            >
+              ×
+            </button>
+          </div>
+          
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            marginBottom: '16px'
+          }}>
+            <div>
+              <div style={{
+                fontSize: '12px',
+                color: '#666',
+                marginBottom: '4px'
+              }}>距離</div>
+              <div style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#333'
+              }}>{routeInfo.distance}</div>
+            </div>
+            <div>
+              <div style={{
+                fontSize: '12px',
+                color: '#666',
+                marginBottom: '4px'
+              }}>所要時間</div>
+              <div style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#333'
+              }}>{routeInfo.duration}</div>
+            </div>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            gap: '8px'
+          }}>
+            <button 
+              onClick={handleClosePopup}
+              style={{
+                flex: 1,
+                padding: '8px 16px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 500,
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = '#45a049'}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = '#4CAF50'}
+            >
+              このルートにする
+            </button>
+            <button 
+              onClick={handleClosePopup}
+              style={{
+                flex: 1,
+                padding: '8px 16px',
+                backgroundColor: '#f5f5f5',
+                color: '#666',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 500,
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = '#e0e0e0'}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+            >
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default App
