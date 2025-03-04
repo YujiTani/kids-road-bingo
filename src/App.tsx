@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState} from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
 
-import './App.css'
+import ProgressCar from './components/progressCar'
+import * as styles from './App.css'
 
 type Position = {
   lat: number
@@ -22,6 +23,7 @@ function App() {
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null)
   const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null)
+  const [showProgressBar, setShowProgressBar] = useState(false)
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -56,15 +58,15 @@ function App() {
 
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            // const userLocation: Position = {
-            //   lat: position.coords.latitude,
-            //   lng: position.coords.longitude
-            // }
-            // debug用
             const userLocation: Position = {
-              lat: 35.6812,
-              lng: 139.7671
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
             }
+            // demoデータ
+            // const userLocation: Position = {
+            //   lat: 35.6812,
+            //   lng: 139.7671
+            // }
             setOrigin(userLocation)
 
             newMap.setCenter(userLocation)
@@ -175,128 +177,60 @@ function App() {
       mapRef.current.style.display = 'none';
     }
 
-    console.log('プログレッシブバーを表示', routeInfo)
     handleClosePopup()
+    setShowProgressBar(true)
   }
 
   return (
     <>
-      <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />
+    {/* progresBarが表示されている間はmapは非表示 */}
+    {showProgressBar ? (
+      null
+    ) : (
+      <div ref={mapRef} className={styles.MapContainer} />
+    )}
+
       {routeInfo?.showPopup && (
-        <div style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          backgroundColor: 'white',
-          padding: '16px',
-          borderRadius: '12px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-          zIndex: 1000,
-          maxWidth: '300px',
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '12px'
-          }}>
-            <h3 style={{
-              margin: 0,
-              fontSize: '16px',
-              fontWeight: 600,
-              color: '#333'
-            }}>ルート情報</h3>
+        <div className={styles.RouteInfoPopup}>
+          <div className={styles.PopupHeader}>
+            <h3 className={styles.PopupTitle}>ルート情報</h3>
             <button 
               onClick={handleClosePopup}
-              style={{
-                background: 'none',
-                border: 'none',
-                fontSize: '20px',
-                cursor: 'pointer',
-                color: '#666',
-                padding: '0 4px'
-              }}
+              className={styles.CloseButton}
             >
               ×
             </button>
           </div>
           
-          <div style={{
-            display: 'flex',
-            gap: '16px',
-            marginBottom: '16px'
-          }}>
+          <div className={styles.InfoContainer}>
             <div>
-              <div style={{
-                fontSize: '12px',
-                color: '#666',
-                marginBottom: '4px'
-              }}>距離</div>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: '#333'
-              }}>{routeInfo.distance}</div>
+              <div className={styles.InfoLabel}>距離</div>
+              <div className={styles.InfoValue}>{routeInfo.distance}</div>
             </div>
             <div>
-              <div style={{
-                fontSize: '12px',
-                color: '#666',
-                marginBottom: '4px'
-              }}>所要時間</div>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: '#333'
-              }}>{routeInfo.duration}</div>
+              <div className={styles.InfoLabel}>所要時間</div>
+              <div className={styles.InfoValue}>{routeInfo.duration}</div>
             </div>
           </div>
 
-          <div style={{
-            display: 'flex',
-            gap: '8px'
-          }}>
+          <div className={styles.ButtonContainer}>
             <button 
               onClick={handleShowProgressBar}
-              style={{
-                flex: 1,
-                padding: '8px 16px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 500,
-                transition: 'background-color 0.2s'
-              }}
-              onMouseOver={e => e.currentTarget.style.backgroundColor = '#45a049'}
-              onMouseOut={e => e.currentTarget.style.backgroundColor = '#4CAF50'}
+              className={styles.ConfirmButton}
             >
               このルートにする
             </button>
             <button 
               onClick={handleClosePopup}
-              style={{
-                flex: 1,
-                padding: '8px 16px',
-                backgroundColor: '#f5f5f5',
-                color: '#666',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 500,
-                transition: 'background-color 0.2s'
-              }}
-              onMouseOver={e => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-              onMouseOut={e => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+              className={styles.CancelButton}
             >
               キャンセル
             </button>
           </div>
         </div>
+      )}
+      {routeInfo?.distance && routeInfo?.duration && showProgressBar && (
+        <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
       )}
     </>
   );

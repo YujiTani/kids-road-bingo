@@ -2,7 +2,7 @@ import { defineConfig } from "@pandacss/dev";
 
 export default defineConfig({
   // CSSシステムの出力ディレクトリ
-  outdir: "styled-system",
+  outdir: "./src/styled-system",
   
   // CSSリセットを使用するかどうか
   preflight: true,
