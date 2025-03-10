@@ -93,9 +93,9 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
         </div>
         
         {/* かわいい道路のプログレスバー */}
-        <div className="relative pt-10 pb-20">
+        <div className="relative pt-10 pb-20 rounded-full">
           {/* 道路のベース */}
-          <div className="h-8 bg-gray-300 rounded-full overflow-hidden relative">
+          <div className="h-8 bg-gray-300 rounded-full relative">
             {/* 道路の線 */}
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white z-10"></div>
             
@@ -107,22 +107,22 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
             </div>
             
             {/* スタート地点 */}
-            <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 text-green-600 z-20">
+            <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 text-green-600">
               <FaMapMarkerAlt size={24} />
             </div>
             
             {/* ゴール地点 */}
-            <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 text-red-600 z-20">
+            <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 text-red-600">
               <FaFlag size={24} />
             </div>
             
             {/* 車のアイコン */}
             <div 
-              className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-30 transition-all duration-500 ease-linear"
+              className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 transition-all duration-500 ease-linear"
               style={{ left: `${progressPercentage}%` }}
             >
               <div className="animate-bounce">
-                <img src={carImage} alt="car" className="w-10 h-10" />
+                <img src={carImage} alt="car" className="w-10 h-10 transform scaleX(-1)" />
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
               onClick={startProgress}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95 flex items-center space-x-2"
             >
-              <img src={carImage} alt="car" className="w-6 h-6 mr-2" />
+              <img src={carImage} alt="car" className="w-6 h-6 mr-2 z-10" />
               <span>ドライブスタート</span>
             </button>
           </div>
