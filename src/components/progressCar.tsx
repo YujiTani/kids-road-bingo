@@ -97,7 +97,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
           {/* 道路のベース */}
           <div className="h-8 bg-gray-300 rounded-full relative">
             {/* 道路の線 */}
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white z-10"></div>
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white"></div>
             
             {/* 進行済みの道路 */}
             <div 
