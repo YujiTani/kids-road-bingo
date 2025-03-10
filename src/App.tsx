@@ -2,7 +2,6 @@ import { useEffect, useRef, useState} from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
 
 import ProgressCar from './components/progressCar'
-import * as styles from './App.css'
 
 type Position = {
   lat: number
@@ -182,57 +181,63 @@ function App() {
   }
 
   return (
-    <>
-    {/* progresBarが表示されている間はmapは非表示 */}
-    {showProgressBar ? (
-      null
-    ) : (
-      <div ref={mapRef} className={styles.MapContainer} />
-    )}
+    <div className="relative h-screen w-full bg-gray-100">
+      {/* progresBarが表示されている間はmapは非表示 */}
+      {showProgressBar ? (
+        null
+      ) : (
+        <div ref={mapRef} className="h-full w-full" />
+      )}
 
       {routeInfo?.showPopup && (
-        <div className={styles.RouteInfoPopup}>
-          <div className={styles.PopupHeader}>
-            <h3 className={styles.PopupTitle}>ルート情報</h3>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-80 bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="flex justify-between items-center bg-blue-600 text-white p-3">
+            <h3 className="font-bold text-lg">ルート情報</h3>
             <button 
               onClick={handleClosePopup}
-              className={styles.CloseButton}
+              className="text-white hover:bg-blue-700 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
             >
               ×
             </button>
           </div>
           
-          <div className={styles.InfoContainer}>
-            <div>
-              <div className={styles.InfoLabel}>距離</div>
-              <div className={styles.InfoValue}>{routeInfo.distance}</div>
+          <div className="p-4 space-y-3">
+            <div className="grid grid-cols-2 gap-2 p-2 bg-gray-50 rounded-lg">
+              <div className="text-gray-600 font-medium">距離</div>
+              <div className="text-blue-700 font-bold text-right">{routeInfo.distance}</div>
             </div>
-            <div>
-              <div className={styles.InfoLabel}>所要時間</div>
-              <div className={styles.InfoValue}>{routeInfo.duration}</div>
+            <div className="grid grid-cols-2 gap-2 p-2 bg-gray-50 rounded-lg">
+              <div className="text-gray-600 font-medium">時間</div>
+              <div className="text-blue-700 font-bold text-right">{routeInfo.duration}</div>
             </div>
           </div>
-
-          <div className={styles.ButtonContainer}>
+          
+          <div className="flex justify-between p-4 bg-gray-50 border-t border-gray-200">
             <button 
               onClick={handleShowProgressBar}
-              className={styles.ConfirmButton}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors"
             >
-              このルートにする
+              スタート
             </button>
             <button 
               onClick={handleClosePopup}
-              className={styles.CancelButton}
+              className="border border-gray-300 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-full transition-colors"
             >
               キャンセル
             </button>
           </div>
         </div>
       )}
-      {routeInfo?.distance && routeInfo?.duration && showProgressBar && (
-        <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
+      
+      {showProgressBar && (
+        <div className="h-full w-full">
+          <ProgressCar
+            distance={routeInfo?.distance || '0km'}
+            duration={routeInfo?.duration || '0分'}
+          />
+        </div>
       )}
-    </>
+    </div>
   );
 }
 
