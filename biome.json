@@ -7,27 +7,19 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": [
-			"node_modules/**",
-			"dist/**",
-			"build/**",
-			"**/*.css",
-			"tsconfig*.json",
-			"*.json",
-			"**/*.json"
-		]
+		"ignore": []
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab"
 	},
 	"organizeImports": {
-		"enabled": false
+		"enabled": true
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": false
+			"recommended": true
 		}
 	},
 	"javascript": {
