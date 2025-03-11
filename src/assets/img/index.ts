@@ -9,13 +9,13 @@ import CarWhiteWebp from "./CarWhite.webp";
 import CarYellowWebp from "./CarYellow.webp";
 
 export {
-  CarBlackWebp as CarBlack,
-  CarBlueWebp as CarBlue,
-  CarGrayWebp as CarGray,
-  CarGreenWebp as CarGreen,
-  CarPinkWebp as CarPink,
-  CarRedWebp as CarRed,
-  CarSkyblueWebp as CarSkyblue,
-  CarWhiteWebp as CarWhite,
-  CarYellowWebp as CarYellow,
+	CarBlackWebp as CarBlack,
+	CarBlueWebp as CarBlue,
+	CarGrayWebp as CarGray,
+	CarGreenWebp as CarGreen,
+	CarPinkWebp as CarPink,
+	CarRedWebp as CarRed,
+	CarSkyblueWebp as CarSkyblue,
+	CarWhiteWebp as CarWhite,
+	CarYellowWebp as CarYellow,
 };
