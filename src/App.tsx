@@ -190,7 +190,7 @@ function App() {
       )}
 
       {routeInfo?.showPopup && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-80 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-72 bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="flex justify-between items-center bg-blue-600 text-white p-3">
             <h3 className="font-bold text-lg">ルート情報</h3>
             <button 
