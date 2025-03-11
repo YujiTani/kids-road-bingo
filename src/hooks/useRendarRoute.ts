@@ -8,7 +8,7 @@ interface UseRenderRouteProps {
     markers: Map<string, google.maps.marker.AdvancedMarkerElement>;
 }
 
-export default function useRenderRoute({ map, origin, destination, markers }: UseRenderRouteProps) {
+function useRenderRoute({ map, origin, destination, markers }: UseRenderRouteProps) {
     const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
     const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
 
@@ -74,3 +74,5 @@ export default function useRenderRoute({ map, origin, destination, markers }: Us
         clearRoute,
     };
 }
+
+export default useRenderRoute;
