@@ -59,14 +59,16 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
     };
   }, [isRunning, progressValue, progressMax]);
 
+  useEffect(() => {
+    console.log('isRunning', isRunning)
+  }, [isRunning])
+
   function startProgress() {
     setIsRunning(true);
-    // スタート時にも車をランダム変更
     const randomIndex = Math.floor(Math.random() * carImages.length);
     setCarImage(carImages[randomIndex]);
   }
 
-  // 経過時間を分:秒形式で表示
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -147,6 +149,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 
         <div className="flex justify-center">
         {!isRunning && progressValue < progressMax && (
+          // ボードサイズを決めたら、ビンゴを始められるに変更する
           <BordStart handleClick={startProgress} />
         )}
         </div>

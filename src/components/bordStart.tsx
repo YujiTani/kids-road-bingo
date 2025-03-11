@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { BingoBoard } from "@/components/bingo-board"
 import { SizeSelector } from "@/components/size-selector"
