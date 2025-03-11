@@ -3,13 +3,14 @@ import { Loader } from '@googlemaps/js-api-loader'
 
 import ProgressCar from './components/progressCar'
 import RouteInfo from './components/routeInfo'
+import useRenderRoute from './hooks/useRendarRoute'
 
-type Position = {
-  lat: number
-  lng: number
+export type LatLngLiteral = {
+  lat: google.maps.LatLngLiteral['lat']
+  lng: google.maps.LatLngLiteral['lng']
 }
 
-type RouteInfo = {
+export type RouteInfo = {
   distance: string;
   duration: string;
   showPopup: boolean;
@@ -17,13 +18,18 @@ type RouteInfo = {
 
 function App() {
   const mapRef = useRef<HTMLDivElement>(null)
-  const [origin, setOrigin] = useState<Position | null>(null)
-  const [destination, setDestination] = useState<Position | null>(null)
+  const [origin, setOrigin] = useState<LatLngLiteral | null>(null)
+  const [destination, setDestination] = useState<LatLngLiteral | null>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
-  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null)
   const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
-  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null)
   const [showProgressBar, setShowProgressBar] = useState(false)
+
+  const { routeInfo, clearRoute } = useRenderRoute({
+    map,
+    origin,
+    destination,
+    markers
+  })
 
   useEffect(() => {
     if (!mapRef.current) return
@@ -58,7 +64,7 @@ function App() {
 
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            const userLocation: Position = {
+            const userLocation: LatLngLiteral = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             }
@@ -87,7 +93,7 @@ function App() {
         newMap.addListener('click', async (event: google.maps.MapMouseEvent) => {
           if (!event.latLng) return
           
-          const clickPosition: Position = {
+          const clickPosition: LatLngLiteral = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
           }
@@ -102,73 +108,11 @@ function App() {
     initMap()
   }, [mapRef, markers])
 
-  // 現在地と目的地の入力を監視し、ルート情報を取得する
-  useEffect(() => {
-    if (!map) return
-    if (!origin || !destination) return
-
-    const fetchRouteInfo = async () => {
-      try {
-        const { DirectionsService, DirectionsRenderer } = await google.maps.importLibrary("routes") as google.maps.RoutesLibrary;
-        const directionsService = new DirectionsService();
-        const directionsRenderer = new DirectionsRenderer();
-        
-        directionsRenderer.setMap(map);
-        setDirectionsRenderer(directionsRenderer)
-        
-        directionsService.route(
-          {
-            origin: origin,
-            destination: destination,
-            travelMode: google.maps.TravelMode.DRIVING,
-          },
-          (result, status) => {
-            if (status === google.maps.DirectionsStatus.OK) {
-              directionsRenderer.setDirections(result);
-              
-              // ルート表示中はマーカーを非表示にする
-              const marker = markers.get("origin")
-              if (marker) {
-                marker.map = null
-              }
-
-              const route = result?.routes[0];
-              if (!route) return
-              const leg = route.legs[0];
-              
-              const distance = leg.distance?.text;
-              const duration = leg.duration?.text;
-              
-              // ルート情報をstateに保存
-              setRouteInfo({
-                distance: distance || '',
-                duration: duration || '',
-                showPopup: true
-              });
-            } else {
-              console.error(`ルート検索に失敗しました: ${status}`);
-            }
-          }
-        );
-      } catch (error) {
-        console.error("ルート情報の取得中にエラーが発生しました", error)
-      }
-    }
-
-    fetchRouteInfo()
-  }, [origin, destination, map, markers])
-
-  // ポップアップを閉じる関数
   const handleClosePopup = async () => {
-    setRouteInfo(prev => prev ? { ...prev, showPopup: false } : null);
-    // マーカーを表示する
+    clearRoute();
     const marker = markers.get("origin")
     if (marker) {
       marker.map = map
-    }
-
-    if (directionsRenderer) {
-      directionsRenderer.setMap(null)
     }
   };
 
