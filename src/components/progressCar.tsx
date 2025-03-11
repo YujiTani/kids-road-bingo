@@ -80,7 +80,6 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
     <div className="h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 to-blue-100 p-6">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6 space-y-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">ドライブ進行中</h2>
           <div className="flex justify-center gap-6 text-gray-600">
             <div className="flex items-center">
               <span className="font-semibold mr-2">距離:</span> 
@@ -147,27 +146,11 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
         </div>
 
         <div className="flex justify-center">
-          <BordStart />
+        {!isRunning && progressValue < progressMax && (
+          <BordStart handleClick={startProgress} />
+        )}
         </div>
         
-        {/* スタートボタン */}
-        {!isRunning && progressValue < progressMax && (
-          <div className="flex justify-center">
-            <button 
-              onClick={startProgress}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 active:scale-95 flex items-center space-x-2"
-            >
-              {carImage ? (
-                <img src={carImage} alt="car" className="w-6 h-6 mr-2 transform scaleX(-1)" />
-              ) : (
-                <div className="w-6 h-6 mr-2 bg-white rounded-full"></div>
-              )}
-              <span>ドライブスタート</span>
-            </button>
-          </div>
-        )}
-        
-        {/* 完了メッセージ */}
         {progressValue >= progressMax && (
           <div className="text-center bg-green-100 p-4 rounded-lg">
             <p className="text-xl font-bold text-green-700">目的地に到着しました！</p>

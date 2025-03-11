@@ -126,13 +126,17 @@ function App() {
   }
 
   return (
-    <div className="relative h-screen w-full bg-gray-100">
-      {/* progresBarが表示されている間はmapは非表示 */}
-      {showProgressBar ? (
-        null
-      ) : (
-        <div ref={mapRef} className="h-full w-full" />
+	<div className="relative h-screen w-full bg-gray-100">
+	<div ref={mapRef} className="h-full w-full" />
+      {showProgressBar && (
+		  <div className="h-full w-full">
+          <ProgressCar
+            distance={routeInfo?.distance || '0km'}
+            duration={routeInfo?.duration || '0分'}
+          />
+        </div>
       )}
+	  
 
       {routeInfo?.showPopup && (
         <RouteInfo 
@@ -141,15 +145,6 @@ function App() {
           distance={routeInfo?.distance || '0km'}
           duration={routeInfo?.duration || '0分'}
         />
-      )}
-      
-      {showProgressBar && (
-        <div className="h-full w-full">
-          <ProgressCar
-            distance={routeInfo?.distance || '0km'}
-            duration={routeInfo?.duration || '0分'}
-          />
-        </div>
       )}
     </div>
   );

@@ -4,11 +4,17 @@ import { useState } from "react"
 import { BingoBoard } from "@/components/bingo-board"
 import { SizeSelector } from "@/components/size-selector"
 
-const BordStart = () => {
-  const [gameStarted, setGameStarted] = useState(false)
-  const [boardSize, setBoardSize] = useState<3 | 5>(3)
+type BordStartProps = {
+  handleClick: () => void
+}
 
-  const startGame = (size: 3 | 5) => {
+export type BordSize = 'mini' | 'middle'
+
+const BordStart = ({ handleClick }: BordStartProps) => {
+  const [gameStarted, setGameStarted] = useState(false)
+  const [boardSize, setBoardSize] = useState<BordSize>('mini')
+
+  const startGame = (size: BordSize) => {
     setBoardSize(size)
     setGameStarted(true)
   }
@@ -20,7 +26,7 @@ const BordStart = () => {
   return (
     <main className="bg-gray-50 p-4 flex flex-col items-center justify-center">
       {!gameStarted ? (
-        <SizeSelector onSelectSize={startGame} />
+        <SizeSelector onSelectSize={startGame} handleClick={handleClick} />
       ) : (
         <>
           <BingoBoard size={boardSize} />

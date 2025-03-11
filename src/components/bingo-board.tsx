@@ -2,32 +2,34 @@ import { useState, useEffect } from "react"
 import { BingoCell } from "@/components/bingo-cell"
 import { bingoItems } from "@/../data/bingo-items"
 import confetti from "canvas-confetti"
-
-type BingoBoardProps = {
-  size: 3 | 5
-}
+import type { BordSize } from "./bordStart"
 
 type CellState = {
   item: string
   marked: boolean
 }
 
+type BingoBoardProps = {
+  size: BordSize
+}
+
 export function BingoBoard({ size }: BingoBoardProps) {
   const [board, setBoard] = useState<CellState[][]>([])
   const [completedLines, setCompletedLines] = useState<number>(0)
   const [allMarked, setAllMarked] = useState<boolean>(false)
+  const [boardSize] = useState<number>(size === 'mini' ? 3 : 5)
 
   // Initialize board with random items
   useEffect(() => {
     const shuffled = [...bingoItems].sort(() => 0.5 - Math.random())
-    const items = shuffled.slice(0, size * size)
+    const items = shuffled.slice(0, size === 'mini' ? 9 : 25)
 
     const newBoard: CellState[][] = []
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < boardSize; i++) {
       const row: CellState[] = []
-      for (let j = 0; j < size; j++) {
+      for (let j = 0; j < boardSize; j++) {
         row.push({
-          item: items[i * size + j],
+          item: items[i * boardSize + j],
           marked: false,
         })
       }
@@ -37,7 +39,7 @@ export function BingoBoard({ size }: BingoBoardProps) {
     setBoard(newBoard)
     setCompletedLines(0)
     setAllMarked(false)
-  }, [size])
+  }, [size, boardSize])
 
   const toggleCell = (row: number, col: number) => {
     const newBoard = [...board]
@@ -53,16 +55,16 @@ export function BingoBoard({ size }: BingoBoardProps) {
     let lines = 0
 
     // Check rows
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < boardSize; i++) {
       if (currentBoard[i].every((cell) => cell.marked)) {
         lines++
       }
     }
 
     // Check columns
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < boardSize; j++) {
       let columnComplete = true
-      for (let i = 0; i < size; i++) {
+      for (let i = 0; i < boardSize; i++) {
         if (!currentBoard[i][j].marked) {
           columnComplete = false
           break
@@ -75,9 +77,9 @@ export function BingoBoard({ size }: BingoBoardProps) {
     let diagonal1Complete = true
     let diagonal2Complete = true
 
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < boardSize; i++) {
       if (!currentBoard[i][i].marked) diagonal1Complete = false
-      if (!currentBoard[i][size - 1 - i].marked) diagonal2Complete = false
+      if (!currentBoard[i][boardSize - 1 - i].marked) diagonal2Complete = false
     }
 
     if (diagonal1Complete) lines++
