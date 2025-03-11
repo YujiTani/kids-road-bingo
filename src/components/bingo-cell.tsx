@@ -18,7 +18,7 @@ export function BingoCell({ item, marked, onClick }: BingoCellProps) {
 
 			{marked && (
 				<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-					<div className="w-[70%] h-[70%] border-4 border-red-500 rounded-full opacity-70"></div>
+					<div className="w-[70%] h-[70%] border-4 border-red-500 rounded-full opacity-70" />
 				</div>
 			)}
 		</button>

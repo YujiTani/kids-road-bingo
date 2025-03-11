@@ -106,13 +106,13 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 					{/* 道路のベース */}
 					<div className="h-8 bg-gray-300 rounded-full relative">
 						{/* 道路の線 */}
-						<div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white"></div>
+						<div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white" />
 
 						{/* 進行済みの道路 */}
 						<div
 							className="h-full bg-gray-600 transition-all duration-500 ease-linear"
 							style={{ width: `${progressPercentage}%` }}
-						></div>
+						/>
 
 						{/* スタート地点 */}
 						<div className="absolute -left-2 top-1/2 transform -translate-y-1/2 text-green-600">
@@ -137,7 +137,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 										className="w-10 h-10 transform scaleX(-1)"
 									/>
 								) : (
-									<div className="w-10 h-10 bg-red-500 rounded-full"></div>
+									<div className="w-10 h-10 bg-red-500 rounded-full" />
 								)}
 							</div>
 						</div>
@@ -177,7 +177,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 									className="w-6 h-6 mr-2 transform scaleX(-1)"
 								/>
 							) : (
-								<div className="w-6 h-6 mr-2 bg-white rounded-full"></div>
+								<div className="w-6 h-6 mr-2 bg-white rounded-full" />
 							)}
 							<span>ドライブスタート</span>
 						</button>
