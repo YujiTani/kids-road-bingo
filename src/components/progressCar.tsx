@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { FaMapMarkerAlt, FaFlag } from "react-icons/fa"
+
 import * as Cars from "../assets/img/index"
 import BordStart from "./bordStart"
 
@@ -21,62 +22,55 @@ type ProgressCarProps = {
 }
 
 function ProgressCar({ distance, duration }: ProgressCarProps) {
-  const [progressMax, setProgressMax] = useState(0)
-  const [progressValue, setProgressValue] = useState(0)
-  const [isRunning, setIsRunning] = useState(false)
+  const initialProgressMax = useMemo(() => {
+    const minutes = Number.parseInt(duration)
+    return minutes * 60
+  }, [duration])
+  
+  const initialCarImage = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * carImages.length)
+    return carImages[randomIndex]
+  }, [])
+  
+  const [progressMax] = useState(initialProgressMax)
+  const [carImage] = useState(initialCarImage)
   const [elapsedTime, setElapsedTime] = useState(0)
-  const [carImage, setCarImage] = useState<string | null>(null)
+  const [isRunning, setIsRunning] = useState(false)
 
-  useEffect(() => {
-    const timeString = duration
-    const minutes = parseInt(timeString)
-    const seconds = minutes * 60
-    const randomIndex = Math.floor(Math.random() * carImages.length)
-    setCarImage(carImages[randomIndex])
-    setProgressMax(seconds)
-  }, [distance, duration])
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout
-
-    if (isRunning && progressValue < progressMax) {
-      interval = setInterval(() => {
-        setProgressValue((prev) => {
-          if (prev >= progressMax) {
-            setIsRunning(false)
-            return prev
-          }
-          return prev + 1
-        })
-        setElapsedTime((prev) => prev + 1)
-      }, 1000)
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval)
-      }
-    }
-  }, [isRunning, progressValue, progressMax])
-
-  useEffect(() => {
-    console.log("isRunning", isRunning)
-  }, [isRunning])
-
-  function startProgress() {
-    setIsRunning(true)
-    const randomIndex = Math.floor(Math.random() * carImages.length)
-    setCarImage(carImages[randomIndex])
-  }
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
+  const formatTime = () => {
+    const mins = Math.floor(elapsedTime / 60)
+    const secs = elapsedTime % 60
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`
   }
 
-  // 進捗率を計算
-  const progressPercentage = progressMax ? Math.min(100, (progressValue / progressMax) * 100) : 0
+  const progressPercentage = useMemo(() => {
+    return progressMax ? Math.min(100, (elapsedTime / progressMax) * 100) : 0
+  }, [elapsedTime, progressMax])
+
+  const startProgress = useCallback(() => {
+    setIsRunning(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isRunning) return;
+    
+    if (elapsedTime >= progressMax) {
+      setIsRunning(false);
+      return;
+    }
+    
+    const interval = setInterval(() => {
+      setElapsedTime(prev => {
+        const newValue = prev + 1;
+        if (newValue >= progressMax) {
+          setIsRunning(false);
+        }
+        return Math.min(newValue, progressMax);
+      });
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [isRunning, elapsedTime, progressMax]);
 
   return (
     <div className="h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 to-blue-100 p-6">
@@ -94,18 +88,16 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
           </div>
         </div>
 
-        {/* かわいい道路のプログレスバー */}
         <div className="relative rounded-full">
           {/* 道路のベース */}
           <div className="h-8 bg-gray-300 rounded-full relative">
             {/* 道路の線 */}
-            <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white"></div>
-
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white" />
             {/* 進行済みの道路 */}
             <div
               className="h-full bg-gray-600 transition-all duration-500 ease-linear"
               style={{ width: `${progressPercentage}%` }}
-            ></div>
+            />
 
             {/* スタート地点 */}
             <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 text-green-600">
@@ -126,7 +118,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
                 {carImage ? (
                   <img src={carImage} alt="car" className="w-10 h-10 transform scaleX(-1)" />
                 ) : (
-                  <div className="w-10 h-10 bg-red-500 rounded-full"></div>
+                  <div className="w-10 h-10 bg-red-500 rounded-full" />
                 )}
               </div>
             </div>
@@ -134,26 +126,20 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 
           {/* 進捗情報 */}
           <div className="flex justify-between mt-6 text-sm text-gray-700">
-            <div>
-              <span className="font-medium">出発</span>
-            </div>
-            <div>
-              <span className="font-medium">経過時間: {formatTime(elapsedTime)}</span>
-            </div>
-            <div>
-              <span className="font-medium">到着予定</span>
-            </div>
+            <span className="font-medium">出発</span>
+            <span className="font-medium">経過時間: {formatTime()}</span>
+            <span className="font-medium">到着予定</span>
           </div>
         </div>
 
         <div className="flex justify-center">
-          {!isRunning && progressValue < progressMax && (
+          {!isRunning && elapsedTime < progressMax && (
             // ボードサイズを決めたら、ビンゴを始められるに変更する
             <BordStart handleClick={startProgress} />
           )}
         </div>
 
-        {progressValue >= progressMax && (
+        {elapsedTime >= progressMax && (
           <div className="text-center bg-green-100 p-4 rounded-lg">
             <p className="text-xl font-bold text-green-700">目的地に到着しました！</p>
           </div>
