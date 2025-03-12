@@ -20,8 +20,8 @@ function App() {
   const mapRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [origin, setOrigin] = useState<LatLngLiteral | null>(null)
-  // const [destination, setDestination] = useState<LatLngLiteral | null>(null)
-  // const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
+  const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
+  const [destination, setDestination] = useState<LatLngLiteral | null>(null)
   // const [showProgressBar, setShowProgressBar] = useState(false)
 
   // const { routeInfo, clearRoute } = useRenderRoute({
@@ -79,60 +79,62 @@ function App() {
     )
   }, [])
 
-  useEffect(() => {
-    initMap()
-    getCurrentPosition()
-  }, [initMap, getCurrentPosition])
+// マーカーを描画する
+const renderMarker = useCallback( async () => {
+  const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+  return new AdvancedMarkerElement({
+    map,
+    position: origin,
+    title: 'originMaker',
+  })
+}, [map, origin])
 
-  if (map && origin) {
-    map.setCenter(origin)
+useEffect(() => {
+  initMap()
+  getCurrentPosition()
+}, [initMap, getCurrentPosition])
+
+// ユーザーの現在地をマップに表示
+const setupOriginMarker = useCallback(async () => {
+  if (!map || !origin) {
+    return
   }
-    
-  // useEffect(() => {
-  //           newMap.setCenter(userLocation)
+  
+  map.setCenter(origin)
+  const marker = await renderMarker()
+  if (marker) {
+    setMarkers(markers.set("originMarker", marker))
+  }
+}, [map, origin, renderMarker, markers])
+setupOriginMarker()
 
-  //           // マーカーのライブラリをインポート
-  //           const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+// Mapにクリックイベントを追加
+const addMapClickEvent = useCallback(() => {
+  if (!map) return
+  
+  map.addListener('click', async (event: google.maps.MapMouseEvent) => {
+    if (!event.latLng) return
+  
+    const clickPosition: LatLngLiteral = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    }
+    setDestination(clickPosition)
+  })
+}, [map])
+addMapClickEvent()
 
-  //           const marker = new AdvancedMarkerElement({
-  //             map: newMap,
-  //             position: userLocation,
-  //             title: 'origin',
-  //           })
-  //           setMarkers(markers.set("origin", marker))
-  //         }
-  //       )
-
-  //       // クリックイベントを追加
-  //       newMap.addListener('click', async (event: google.maps.MapMouseEvent) => {
-  //         if (!event.latLng) return
-
-  //         const clickPosition: LatLngLiteral = {
-  //           lat: event.latLng.lat(),
-  //           lng: event.latLng.lng(),
-  //         }
-  //         setDestination(clickPosition)
-  //       })
-
-  //     } catch (error) {
-  //       console.error("マップの読み込み中にエラーが発生しました", error);
-  //     }
-  //   }
-
-  //   initMap()
-  // }, [mapRef, markers])
-
-  // const handleClosePopup = async () => {
+// const handleClosePopup = async () => {
   //   clearRoute();
   //   const marker = markers.get("origin")
   //   if (marker) {
-  //     marker.map = map
-  //   }
-  // };
-
-  // const handleShowProgressBar = () => {
-  //   if (mapRef.current) {
-  //     mapRef.current.style.display = 'none';
+    //     marker.map = map
+    //   }
+    // };
+    
+    // const handleShowProgressBar = () => {
+      //   if (mapRef.current) {
+        //     mapRef.current.style.display = 'none';
   //   }
 
   //   handleClosePopup()
@@ -142,6 +144,7 @@ function App() {
   return (
     <div className="relative h-screen w-full bg-gray-100">
       <div ref={mapRef} className="h-full w-full" />
+
       {/* {showProgressBar && ( */}
       {/* <div className="h-full w-full">
           <ProgressCar
