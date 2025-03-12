@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Loader } from "@googlemaps/js-api-loader"
 
 // import ProgressCar from './components/progressCar'
@@ -30,42 +30,58 @@ function App() {
   //   destination,
   //   markers
   // })
-
-  const loader = new Loader({
+  
+  const loader = useMemo(() => new Loader({
     apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     version: "weekly",
     libraries: ["places"],
-  })
+  }), [])
 
-  const mapOptions = {
+  const mapOptions = useMemo(() => ({
     center: {
       lat: 35.6812,
       lng: 139.7671,
     },
     zoom: 13,
-    mapId: "map",
-  }
+      mapId: "map",
+    }), [])
 
-  const initMap = async () => {
+  const initMap = useCallback(async () => {
     try {
       if (!mapRef.current) return
-
+      
       const { Map: GoogleMap } = (await loader.importLibrary("maps")) as google.maps.MapsLibrary
       new GoogleMap(mapRef.current, mapOptions)
     } catch (error) {
       console.error("マップの読み込み中にエラーが発生しました", error)
     }
-  }
-  initMap()
+  }, [loader, mapOptions])
+  
+  useEffect(() => {
+    initMap()
+  }, [initMap])
+  
+  // const getCurrentPosition = async () => {
+  //   if (!navigator.geolocation) {
+  //     console.log("Geolocation is not supported by this browser.")
+  //     return
+  //   }
+  //   navigator.geolocation.getCurrentPosition(
+  //     async (position) => {
+  //       const userLocation: LatLngLiteral = {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude
+  //       }
+  //       console.log(userLocation)
+  //     },
+  //     (error) => {
+  //       console.error("Geolocation error:", error)
+  //     }
+  //   )
+  // }
+  // getCurrentPosition()
 
   // useEffect(() => {
-
-  //     try {
-  //       if (!navigator.geolocation) {
-  //         console.log("Geolocation is not supported by this browser.");
-  //         return;
-  //       }
-
   //       navigator.geolocation.getCurrentPosition(
   //         async (position) => {
   //           const userLocation: LatLngLiteral = {
