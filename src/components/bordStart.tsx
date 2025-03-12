@@ -6,11 +6,11 @@ type BordStartProps = {
   handleClick: () => void
 }
 
-export type BordSize = 'mini' | 'middle'
+export type BordSize = "mini" | "middle"
 
 const BordStart = ({ handleClick }: BordStartProps) => {
   const [gameStarted, setGameStarted] = useState(false)
-  const [boardSize, setBoardSize] = useState<BordSize>('mini')
+  const [boardSize, setBoardSize] = useState<BordSize>("mini")
 
   const startGame = (size: BordSize) => {
     setBoardSize(size)

@@ -24,4 +24,3 @@ export function BingoCell({ item, marked, onClick }: BingoCellProps) {
     </button>
   )
 }
-

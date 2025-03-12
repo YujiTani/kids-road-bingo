@@ -17,12 +17,12 @@ export function BingoBoard({ size }: BingoBoardProps) {
   const [board, setBoard] = useState<CellState[][]>([])
   const [completedLines, setCompletedLines] = useState<number>(0)
   const [allMarked, setAllMarked] = useState<boolean>(false)
-  const [boardSize] = useState<number>(size === 'mini' ? 3 : 5)
+  const [boardSize] = useState<number>(size === "mini" ? 3 : 5)
 
   // Initialize board with random items
   useEffect(() => {
     const shuffled = [...bingoItems].sort(() => 0.5 - Math.random())
-    const items = shuffled.slice(0, size === 'mini' ? 9 : 25)
+    const items = shuffled.slice(0, size === "mini" ? 9 : 25)
 
     const newBoard: CellState[][] = []
     for (let i = 0; i < boardSize; i++) {
@@ -144,4 +144,3 @@ export function BingoBoard({ size }: BingoBoardProps) {
     </div>
   )
 }
-

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { FaMapMarkerAlt, FaFlag } from 'react-icons/fa';
-import * as Cars from '../assets/img/index';
-import BordStart from "./bordStart";
+import { FaMapMarkerAlt, FaFlag } from "react-icons/fa"
+import * as Cars from "../assets/img/index"
+import BordStart from "./bordStart"
 
 const carImages = [
   Cars.CarBlack,
@@ -12,12 +12,12 @@ const carImages = [
   Cars.CarRed,
   Cars.CarSkyblue,
   Cars.CarWhite,
-  Cars.CarYellow
-];
+  Cars.CarYellow,
+]
 
 type ProgressCarProps = {
-    distance: string
-    duration: string
+  distance: string
+  duration: string
 }
 
 function ProgressCar({ distance, duration }: ProgressCarProps) {
@@ -29,54 +29,54 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 
   useEffect(() => {
     const timeString = duration
-    const minutes = parseInt(timeString);
-    const seconds = minutes * 60;
-    const randomIndex = Math.floor(Math.random() * carImages.length);
-    setCarImage(carImages[randomIndex]);
+    const minutes = parseInt(timeString)
+    const seconds = minutes * 60
+    const randomIndex = Math.floor(Math.random() * carImages.length)
+    setCarImage(carImages[randomIndex])
     setProgressMax(seconds)
   }, [distance, duration])
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
+    let interval: NodeJS.Timeout
+
     if (isRunning && progressValue < progressMax) {
       interval = setInterval(() => {
         setProgressValue((prev) => {
           if (prev >= progressMax) {
-            setIsRunning(false);
-            return prev;
+            setIsRunning(false)
+            return prev
           }
-          return prev + 1;
-        });
-        setElapsedTime(prev => prev + 1);
-      }, 1000);
+          return prev + 1
+        })
+        setElapsedTime((prev) => prev + 1)
+      }, 1000)
     }
 
     return () => {
       if (interval) {
-        clearInterval(interval);
+        clearInterval(interval)
       }
-    };
-  }, [isRunning, progressValue, progressMax]);
+    }
+  }, [isRunning, progressValue, progressMax])
 
   useEffect(() => {
-    console.log('isRunning', isRunning)
+    console.log("isRunning", isRunning)
   }, [isRunning])
 
   function startProgress() {
-    setIsRunning(true);
-    const randomIndex = Math.floor(Math.random() * carImages.length);
-    setCarImage(carImages[randomIndex]);
+    setIsRunning(true)
+    const randomIndex = Math.floor(Math.random() * carImages.length)
+    setCarImage(carImages[randomIndex])
   }
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  };
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`
+  }
 
   // 進捗率を計算
-  const progressPercentage = progressMax ? Math.min(100, (progressValue / progressMax) * 100) : 0;
+  const progressPercentage = progressMax ? Math.min(100, (progressValue / progressMax) * 100) : 0
 
   return (
     <div className="h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 to-blue-100 p-6">
@@ -84,42 +84,41 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
         <div className="text-center">
           <div className="flex justify-center gap-6 text-gray-600">
             <div className="flex items-center">
-              <span className="font-semibold mr-2">距離:</span> 
+              <span className="font-semibold mr-2">距離:</span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">{distance}</span>
             </div>
             <div className="flex items-center">
-              <span className="font-semibold mr-2">予想時間:</span> 
+              <span className="font-semibold mr-2">予想時間:</span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">{duration}</span>
             </div>
           </div>
         </div>
-        
+
         {/* かわいい道路のプログレスバー */}
         <div className="relative rounded-full">
           {/* 道路のベース */}
           <div className="h-8 bg-gray-300 rounded-full relative">
             {/* 道路の線 */}
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-white border-dashed border-2 border-white"></div>
-            
+
             {/* 進行済みの道路 */}
-            <div 
+            <div
               className="h-full bg-gray-600 transition-all duration-500 ease-linear"
               style={{ width: `${progressPercentage}%` }}
-            >
-            </div>
-            
+            ></div>
+
             {/* スタート地点 */}
             <div className="absolute -left-2 top-1/2 transform -translate-y-1/2 text-green-600">
               <FaMapMarkerAlt size={24} />
             </div>
-            
+
             {/* ゴール地点 */}
             <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 text-red-600">
               <FaFlag size={24} />
             </div>
-            
+
             {/* 車のアイコン */}
-            <div 
+            <div
               className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-60 transition-all duration-500 ease-linear"
               style={{ left: `${progressPercentage}%` }}
             >
@@ -132,7 +131,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
               </div>
             </div>
           </div>
-          
+
           {/* 進捗情報 */}
           <div className="flex justify-between mt-6 text-sm text-gray-700">
             <div>
@@ -148,12 +147,12 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
         </div>
 
         <div className="flex justify-center">
-        {!isRunning && progressValue < progressMax && (
-          // ボードサイズを決めたら、ビンゴを始められるに変更する
-          <BordStart handleClick={startProgress} />
-        )}
+          {!isRunning && progressValue < progressMax && (
+            // ボードサイズを決めたら、ビンゴを始められるに変更する
+            <BordStart handleClick={startProgress} />
+          )}
         </div>
-        
+
         {progressValue >= progressMax && (
           <div className="text-center bg-green-100 p-4 rounded-lg">
             <p className="text-xl font-bold text-green-700">目的地に到着しました！</p>

@@ -6,7 +6,6 @@ type SizeSelectorProps = {
 }
 
 export function SizeSelector({ onSelectSize, handleClick }: SizeSelectorProps) {
-
   const startGame = (event: React.MouseEvent<HTMLButtonElement>) => {
     const size = event.currentTarget.dataset.size as BordSize
     if (size) {
@@ -39,4 +38,3 @@ export function SizeSelector({ onSelectSize, handleClick }: SizeSelectorProps) {
     </div>
   )
 }
-
