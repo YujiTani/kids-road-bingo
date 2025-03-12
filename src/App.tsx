@@ -10,19 +10,13 @@ export type LatLngLiteral = {
   lng: google.maps.LatLngLiteral["lng"]
 }
 
-export type RouteInfo = {
-  distance: string
-  duration: string
-  showPopup: boolean
-}
-
 function App() {
   const mapRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [origin, setOrigin] = useState<LatLngLiteral | null>(null)
   const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
   const [destination, setDestination] = useState<LatLngLiteral | null>(null)
-  const [showProgressBar, setShowProgressBar] = useState(false)
+  const [showProgressCar, setShowProgressCar] = useState(false)
 
   const { routeInfo, clearRoute } = useRenderRoute({
     map,
@@ -131,40 +125,40 @@ function App() {
   }, [map])
   addMapClickEvent()
 
-  const handleClosePopup = async () => {
+  const handleClosePopup = useCallback(async () => {
     clearRoute()
     const marker = markers.get("origin")
     if (marker) {
       marker.map = map
     }
-  }
+  }, [clearRoute, markers, map])
 
-  const handleShowProgressBar = () => {
+  const handleShowProgressCar = useCallback(() => {
     if (mapRef.current) {
       mapRef.current.style.display = "none"
     }
 
     handleClosePopup()
-    setShowProgressBar(true)
-  }
+    setShowProgressCar(true)
+  }, [handleClosePopup])
 
   return (
     <div className="relative h-screen w-full bg-gray-100">
       <div ref={mapRef} className="h-full w-full" />
 
-      {showProgressBar && (
-        <div className="h-full w-full">
-          <ProgressCar distance={routeInfo?.distance || "0km"} duration={routeInfo?.duration || "0分"} />
-        </div>
-      )}
-
       {routeInfo?.showPopup && (
         <RouteInfo
           handleClosePopup={handleClosePopup}
-          handleShowProgressBar={handleShowProgressBar}
-          distance={routeInfo?.distance || "0km"}
-          duration={routeInfo?.duration || "0分"}
+          handleShowProgressBar={handleShowProgressCar}
+          distance={routeInfo.distance}
+          duration={routeInfo.duration}
         />
+      )}
+
+      {showProgressCar && routeInfo && (
+        <div className="h-full w-full">
+          <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
+        </div>
       )}
     </div>
   )

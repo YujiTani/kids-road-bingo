@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
-import type { LatLngLiteral, RouteInfo } from "@/App"
+import type { LatLngLiteral } from "@/App"
+
+export type RouteInfo = {
+  distance: string
+  duration: string
+  showPopup: boolean
+}
 
 interface UseRenderRouteProps {
   map: google.maps.Map | null
