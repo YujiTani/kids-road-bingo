@@ -11,6 +11,7 @@ function RouteInfo({ handleClosePopup, handleShowProgressBar, distance, duration
       <div className="flex justify-between items-center bg-blue-600 text-white p-3">
         <h3 className="font-bold text-lg">ルート情報</h3>
         <button
+          type="button"
           onClick={handleClosePopup}
           className="text-white hover:bg-blue-700 rounded-full h-8 w-8 flex items-center justify-center transition-colors"
         >
@@ -31,12 +32,14 @@ function RouteInfo({ handleClosePopup, handleShowProgressBar, distance, duration
 
       <div className="flex justify-between p-4 bg-gray-50 border-t border-gray-200">
         <button
+          type="button"
           onClick={handleShowProgressBar}
           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors"
         >
           スタート
         </button>
         <button
+          type="button"
           onClick={handleClosePopup}
           className="border border-gray-300 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-full transition-colors"
         >
