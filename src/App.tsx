@@ -18,9 +18,9 @@ export type RouteInfo = {
 
 function App() {
   const mapRef = useRef<HTMLDivElement>(null)
-  // const [origin, setOrigin] = useState<LatLngLiteral | null>(null)
+  const [map, setMap] = useState<google.maps.Map | null>(null)
+  const [origin, setOrigin] = useState<LatLngLiteral | null>(null)
   // const [destination, setDestination] = useState<LatLngLiteral | null>(null)
-  // const [map, setMap] = useState<google.maps.Map | null>(null)
   // const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
   // const [showProgressBar, setShowProgressBar] = useState(false)
 
@@ -46,55 +46,49 @@ function App() {
       mapId: "map",
     }), [])
 
+  // マップを初期化
   const initMap = useCallback(async () => {
     try {
       if (!mapRef.current) return
       
       const { Map: GoogleMap } = (await loader.importLibrary("maps")) as google.maps.MapsLibrary
-      new GoogleMap(mapRef.current, mapOptions)
+      const newMap = new GoogleMap(mapRef.current, mapOptions)
+      setMap(newMap)
     } catch (error) {
       console.error("マップの読み込み中にエラーが発生しました", error)
     }
   }, [loader, mapOptions])
   
+  // ユーザーの現在地を取得
+  const getCurrentPosition = useCallback(() => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by this browser.")
+      return
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation: LatLngLiteral = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        setOrigin(userLocation)
+      },
+      (error) => {
+        console.error("Geolocation error:", error)
+      }
+    )
+  }, [])
+
   useEffect(() => {
     initMap()
-  }, [initMap])
-  
-  // const getCurrentPosition = async () => {
-  //   if (!navigator.geolocation) {
-  //     console.log("Geolocation is not supported by this browser.")
-  //     return
-  //   }
-  //   navigator.geolocation.getCurrentPosition(
-  //     async (position) => {
-  //       const userLocation: LatLngLiteral = {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude
-  //       }
-  //       console.log(userLocation)
-  //     },
-  //     (error) => {
-  //       console.error("Geolocation error:", error)
-  //     }
-  //   )
-  // }
-  // getCurrentPosition()
+    getCurrentPosition()
+  }, [initMap, getCurrentPosition])
 
+  if (map && origin) {
+    map.setCenter(origin)
+  }
+    
   // useEffect(() => {
-  //       navigator.geolocation.getCurrentPosition(
-  //         async (position) => {
-  //           const userLocation: LatLngLiteral = {
-  //             lat: position.coords.latitude,
-  //             lng: position.coords.longitude
-  //           }
-  //           // demoデータ
-  //           // const userLocation: Position = {
-  //           //   lat: 35.6812,
-  //           //   lng: 139.7671
-  //           // }
-  //           setOrigin(userLocation)
-
   //           newMap.setCenter(userLocation)
 
   //           // マーカーのライブラリをインポート
