@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 
-import { TimerContext } from "@/contexts/timeContext"
+import TimerContext from "@/contexts/timeContext"
 
 // 秒単位のタイマー
 function useSecondsTimer() {
