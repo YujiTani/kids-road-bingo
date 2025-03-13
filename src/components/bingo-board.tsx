@@ -135,9 +135,9 @@ export function BingoBoard({ size }: BingoBoardProps) {
       {completedLines > 0 && (
         <div className="mt-4 p-3 bg-yellow-100 text-yellow-800 font-bold rounded-md text-center">
           {allMarked ? (
-            <span className="text-base">ぜんぶ みつけたね！ すごい！！</span>
+            <span className="text-base">ぜんぶ みつけたよ！！☺️</span>
           ) : (
-            <span className="text-base">{completedLines}本 ビンゴ できたよ！</span>
+            <span className="text-base">すごい！ {completedLines}つ そろったよ！</span>
           )}
         </div>
       )}
