@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { BingoBoard } from "@/components/bingo-board"
 import { SizeSelector } from "@/components/size-selector"
+import TimerContext from "@/contexts/timeContext"
 
 type BordStartProps = {
   handleClick: () => void
@@ -9,26 +10,27 @@ type BordStartProps = {
 export type BordSize = "mini" | "middle"
 
 const BordStart = ({ handleClick }: BordStartProps) => {
-  const [gameStarted, setGameStarted] = useState(false)
+  const { isRunning, setIsRunning } = useContext(TimerContext)
   const [boardSize, setBoardSize] = useState<BordSize>("mini")
 
   const startGame = (size: BordSize) => {
     setBoardSize(size)
-    setGameStarted(true)
+    setIsRunning(true)
   }
 
   const resetGame = () => {
-    setGameStarted(false)
+    setIsRunning(false)
   }
 
   return (
     <main className="bg-gray-50 p-4 flex flex-col items-center justify-center">
-      {!gameStarted ? (
+      {!isRunning ? (
         <SizeSelector onSelectSize={startGame} handleClick={handleClick} />
       ) : (
         <>
           <BingoBoard size={boardSize} />
           <button
+            type="button"
             onClick={resetGame}
             className="mt-6 px-6 py-3 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 transition-all duration-200"
           >
