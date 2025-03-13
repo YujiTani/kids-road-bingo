@@ -118,12 +118,12 @@ export function BingoBoard({ size }: BingoBoardProps) {
     <div className="flex flex-col items-center gap-4">
       <div
         className="grid gap-2 bg-white p-4 rounded-lg shadow-md max-w-[90vw] md:max-w-[600px] aspect-square"
-        style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}
+        style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
       >
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <BingoCell
-              key={`${rowIndex}-${colIndex}`}
+              key={`cell-${cell.item}`}
               item={cell.item}
               marked={cell.marked}
               onClick={() => toggleCell(rowIndex, colIndex)}
