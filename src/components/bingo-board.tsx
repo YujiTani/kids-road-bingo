@@ -117,7 +117,7 @@ export function BingoBoard({ size }: BingoBoardProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       <div
-        className="grid gap-2 bg-white p-4 rounded-lg shadow-md max-w-[90vw] md:max-w-[600px] aspect-square"
+        className="grid gap-1 bg-white rounded-lg shadow-md max-w-[90vw] md:max-w-[600px] aspect-square"
         style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
       >
         {board.map((row, rowIndex) =>
