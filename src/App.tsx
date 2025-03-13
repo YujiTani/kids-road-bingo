@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Loader } from "@googlemaps/js-api-loader"
 
-import ProgressCar from "./components/progressCar"
-import RouteInfo from "./components/routeInfo"
-import useRenderRoute from "./hooks/useRendarRoute"
+import ProgressCar from "@/components/progressCar"
+import RouteInfo from "@/components/routeInfo"
+import TimerProvider from "@/contexts/timerProvider"
+import useRenderRoute from "@/hooks/useRendarRoute"
 
 export type LatLngLiteral = {
   lat: google.maps.LatLngLiteral["lat"]
@@ -157,7 +158,9 @@ function App() {
 
       {showProgressCar && routeInfo && (
         <div className="h-full w-full">
-          <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
+          <TimerProvider>
+            <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
+          </TimerProvider>
         </div>
       )}
     </div>
