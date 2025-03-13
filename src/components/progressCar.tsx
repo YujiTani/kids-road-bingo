@@ -61,11 +61,11 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
         <div className="text-center">
           <div className="flex justify-center gap-6 text-gray-600">
             <div className="flex items-center">
-              <span className="font-semibold mr-2">距離:</span>
+              <span className="font-semibold mr-2">きょり:</span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">{distance}</span>
             </div>
             <div className="flex items-center">
-              <span className="font-semibold mr-2">予想時間:</span>
+              <span className="font-semibold mr-2">じかん:</span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">{duration}</span>
             </div>
           </div>
@@ -108,12 +108,8 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
           </div>
 
           {/* 進捗情報 */}
-          <div className="flex justify-between mt-6 text-sm text-gray-700">
-            <span className="font-medium">出発</span>
-            <span className="font-medium">
-              <CurrentTimeDisplay />
-            </span>
-            <span className="font-medium">到着予定</span>
+          <div className="mt-6 text-sm text-center text-gray-700">
+            <CurrentTimeDisplay />
           </div>
         </div>
 
@@ -123,7 +119,8 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 
         {elapsedTime >= progressMax && (
           <div className="text-center bg-green-100 p-4 rounded-lg">
-            <p className="text-xl font-bold text-green-700">目的地に到着しました！</p>
+            <p className="text-xl font-bold text-green-700">とうちゃく！</p>
+            <small className="text-gray-500 font-bold">がんばったね！</small>
           </div>
         )}
       </div>

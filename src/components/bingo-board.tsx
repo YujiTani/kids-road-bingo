@@ -117,7 +117,7 @@ export function BingoBoard({ size }: BingoBoardProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       <div
-        className="grid gap-1 bg-white rounded-lg shadow-md max-w-[90vw] md:max-w-[600px] aspect-square"
+        className="grid gap-1 bg-white max-w-[90vw] md:max-w-[600px] aspect-square"
         style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
       >
         {board.map((row, rowIndex) =>
@@ -135,9 +135,9 @@ export function BingoBoard({ size }: BingoBoardProps) {
       {completedLines > 0 && (
         <div className="mt-4 p-3 bg-yellow-100 text-yellow-800 font-bold rounded-md text-center">
           {allMarked ? (
-            <span className="text-xl">ぜんぶ みつけたね！ すごい！！</span>
+            <span className="text-base">ぜんぶ みつけたね！ すごい！！</span>
           ) : (
-            <span>{completedLines}本 ビンゴ できたよ！</span>
+            <span className="text-base">{completedLines}本 ビンゴ できたよ！</span>
           )}
         </div>
       )}

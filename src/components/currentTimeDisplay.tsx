@@ -9,7 +9,7 @@ function CurrentTimeDisplay() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
   }
 
-  return <>経過時間: {formatTime()}</>
+  return <>はしったじかん: {formatTime()}</>
 }
 
 export default CurrentTimeDisplay

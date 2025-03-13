@@ -23,7 +23,7 @@ const BordStart = ({ handleClick }: BordStartProps) => {
   }
 
   return (
-    <main className="bg-gray-50 p-4 flex flex-col items-center justify-center">
+    <main className="flex flex-col items-center justify-center">
       {!isRunning ? (
         <SizeSelector onSelectSize={startGame} handleClick={handleClick} />
       ) : (
@@ -32,9 +32,9 @@ const BordStart = ({ handleClick }: BordStartProps) => {
           <button
             type="button"
             onClick={resetGame}
-            className="mt-6 px-6 py-3 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 transition-all duration-200"
+            className="mt-6 mb-4 px-6 py-3 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 transition-all duration-200"
           >
-            さいしょから やりなおす
+            やりなおす
           </button>
         </>
       )}
