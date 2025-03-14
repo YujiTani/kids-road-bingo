@@ -56,7 +56,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
   }, [elapsedTime, progressMax, setIsRunning])
 
   return (
-    <div className="h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 to-blue-100 p-6">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 to-blue-100 p-6">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6 space-y-8">
         <div className="text-center">
           <div className="flex justify-center gap-6 text-gray-600">
