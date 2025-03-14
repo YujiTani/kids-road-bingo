@@ -1,44 +1,45 @@
+import { CarMailTruck, CarTruck, CarAmbulance, CarPolice, CarBus, CarGarbageTruck, CarKoujiShovelcar, CarKoujiCrane, CarKoujiRoadRoller, CarTankerTruck } from "@/assets/img"
+
 export const bingoItems = [
   {
     name: "ゆうびんしゃ",
-    image:"src/assets/img/car_mail_truck.png",
+    image: CarMailTruck,
   },
   {
     name: "とらっく",
-    image:"src/assets/img/car_truck.png",
+    image: CarTruck,
   },
   {
     name: "きゅうきゅうしゃ",
-    image:"src/assets/img/car_ambulance.png",
+    image: CarAmbulance,
   },
   {
     name: "ぱとかー",
-    image:"src/assets/img/car_police.png",
+    image: CarPolice,
   },
   {
     name: "ばす",
-    image:"src/assets/img/car_bus.png",
+    image: CarBus,
   },
   {
     name: "ごみ しゅうしゅうしゃ",
-    image:"src/assets/img/car_garbage_truck.png",
+    image: CarGarbageTruck,
   },
   {
     name: "しょべるかー",
-    image:"src/assets/img/car_kouji_shovelcar.png",
+    image: CarKoujiShovelcar,
   },
   {
     name: "くれーんしゃ",
-    image:"src/assets/img/car_kouji_crane.png",
+    image: CarKoujiCrane,
   },
   {
     name: "ろーどろーらー",
-    image:"src/assets/img/car_kouji_road_roller.png",
+    image: CarKoujiRoadRoller,
   },
   {
-    id: 10,
     name: "たんくろーりー",
-    image:"src/assets/img/car_tanker_truck.png",
+    image: CarTankerTruck,
   },
   // {
   //   id: 12,
