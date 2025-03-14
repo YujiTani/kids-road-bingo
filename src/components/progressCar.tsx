@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaFlag } from "react-icons/fa"
 
 import * as Cars from "@/assets/img/index"
 import BordStart from "@/components/bordStart"
-import CurrentTimeDisplay from "@/components/currentTimeDisplay"
+import ElapsedTimeDisplay from "@/components/currentTimeDisplay"
 import TimerContext from "@/contexts/timeContext"
 import useSecondsTimer from "@/hooks/useSecondsTimer"
 
@@ -108,7 +108,7 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
 
           {/* 進捗情報 */}
           <div className="mt-6 text-sm text-center text-gray-700">
-            <CurrentTimeDisplay />
+            <ElapsedTimeDisplay />
           </div>
         </div>
 
