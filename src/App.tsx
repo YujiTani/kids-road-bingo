@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState, Suspense } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Loader } from "@googlemaps/js-api-loader"
-import { ErrorBoundary } from 'react-error-boundary'
 
 import ProgressCar from "@/components/progressCar"
 import RouteInfo from "@/components/routeInfo"
@@ -19,8 +18,6 @@ function App() {
   const [markers, setMarkers] = useState<Map<string, google.maps.marker.AdvancedMarkerElement>>(new Map())
   const [destination, setDestination] = useState<LatLngLiteral | null>(null)
   const [showProgressCar, setShowProgressCar] = useState(false)
-  const [locationLoading, setLocationLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   const { routeInfo, clearRoute } = useRenderRoute({
     map,
@@ -68,8 +65,6 @@ function App() {
   const getCurrentPosition = useCallback(() => {
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by this browser.")
-      setError("お使いのブラウザは位置情報をサポートしていません")
-      setLocationLoading(false)
       return
     }
     navigator.geolocation.getCurrentPosition(
@@ -79,12 +74,9 @@ function App() {
           lng: position.coords.longitude,
         }
         setOrigin(userLocation)
-        setLocationLoading(false)
       },
       (error) => {
         console.error("Geolocation error:", error)
-        setError(`位置情報が取得できませんでした: ${error.message}`)
-        setLocationLoading(false)
       },
     )
   }, [])
@@ -151,10 +143,6 @@ function App() {
     setShowProgressCar(true)
   }, [handleClosePopup])
 
-  if (error) {
-    return <div className="error-message">{error}</div>
-  }
-
   return (
     <div className="relative h-screen w-full bg-gray-100">
       <div ref={mapRef} className="h-full w-full" />
@@ -174,30 +162,6 @@ function App() {
             <ProgressCar distance={routeInfo.distance} duration={routeInfo.duration} />
           </TimerProvider>
         </div>
-      )}
-
-      {locationLoading && (
-        <div className="loading-indicator">
-          <div className="spinner" />
-          <p>現在地を取得中...</p>
-        </div>
-      )}
-      
-      {!locationLoading && !map && (
-        <div className="loading-indicator">
-          <div className="spinner" />
-          <p>マップを描画中...</p>
-        </div>
-      )}
-
-      {!locationLoading && map && (
-        <ErrorBoundary fallback={<div>マップの読み込みに失敗しました</div>}>
-          <Suspense fallback={<div>マップデータを読み込み中...</div>}>
-            <div className="map-container">
-              <h3>緯度: {origin?.lat}, 経度: {origin?.lng}</h3>
-            </div>
-          </Suspense>
-        </ErrorBoundary>
       )}
     </div>
   )
