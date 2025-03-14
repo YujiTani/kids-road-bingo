@@ -9,7 +9,7 @@ function useSecondsTimer() {
 
   useEffect(() => {
     if (!isRunning) return
-  
+
     const intervalId = setInterval(() => {
       setElapsedTime((prev) => prev + 1)
     }, 1000)

@@ -52,7 +52,6 @@ function ProgressCar({ distance, duration }: ProgressCarProps) {
     if (elapsedTime >= progressMax) {
       setIsRunning(false)
     }
-
   }, [elapsedTime, progressMax, setIsRunning])
 
   return (

@@ -1,4 +1,15 @@
-import { CarMailTruck, CarTruck, CarAmbulance, CarPolice, CarBus, CarGarbageTruck, CarKoujiShovelcar, CarKoujiCrane, CarKoujiRoadRoller, CarTankerTruck } from "@/assets/img"
+import {
+  CarMailTruck,
+  CarTruck,
+  CarAmbulance,
+  CarPolice,
+  CarBus,
+  CarGarbageTruck,
+  CarKoujiShovelcar,
+  CarKoujiCrane,
+  CarKoujiRoadRoller,
+  CarTankerTruck,
+} from "@/assets/img"
 
 export const bingoItems = [
   {
