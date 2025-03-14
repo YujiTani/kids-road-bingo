@@ -26,8 +26,9 @@ type ProgressCarProps = {
 
 function ProgressCar({ distance, duration }: ProgressCarProps) {
   const initialProgressMax = useMemo(() => {
-    const minutes = Number.parseInt(duration)
-    return minutes * 60
+    const formattedDuration = duration.replace('時間', ':').replace('分', '')
+    const [hours, minutes] = formattedDuration.split(':').map(Number)
+    return hours * 60 * 60 + minutes * 60
   }, [duration])
 
   const initialCarImage = useMemo(() => {
