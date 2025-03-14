@@ -1,10 +1,16 @@
 import { StrictMode } from "react"
-import { createRoot } from "react-dom/client"
+import ReactDOM from "react-dom/client"
+import { HelmetProvider } from "react-helmet-async"
 import "./global.css"
 import App from "./App.tsx"
 
-createRoot(document.getElementById("root") as HTMLElement).render(
+// OGP用のデフォルト設定
+const helmetContext = {}
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
-    <App />
+    <HelmetProvider context={helmetContext}>
+      <App />
+    </HelmetProvider>
   </StrictMode>,
 )

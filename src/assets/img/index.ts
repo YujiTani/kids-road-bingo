@@ -1,3 +1,4 @@
+import DriveBingoOgpPng from './ogp/drive_bingo_ogp.png'
 import CarBlackWebp from './CarBlack.webp';
 import CarBlueWebp from './CarBlue.webp';
 import CarGrayWebp from './CarGray.webp';
@@ -18,8 +19,8 @@ import CarKoujiCranePng from './car_kouji_crane.png'
 import CarKoujiRoadRollerPng from './car_kouji_road_roller.png'
 import CarTankerTruckPng from './car_tanker_truck.png'
 
-
 export { 
+    DriveBingoOgpPng as DriveBingoOgp,
     CarBlackWebp as CarBlack,
     CarBlueWebp as CarBlue,
     CarGrayWebp as CarGray,
