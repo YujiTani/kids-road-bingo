@@ -1,10 +1,11 @@
 type BingoCellProps = {
   item: string
+  image: string
   marked: boolean
   onClick: () => void
 }
 
-export function BingoCell({ item, marked, onClick }: BingoCellProps) {
+export function BingoCell({ item, image, marked, onClick }: BingoCellProps) {
   return (
     <button
       type="button"
@@ -19,7 +20,7 @@ export function BingoCell({ item, marked, onClick }: BingoCellProps) {
         overflow-hidden
       `}
     >
-      {item}
+      <img src={image} alt={item} className="w-full h-full object-contain" />
 
       {marked && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
