@@ -118,6 +118,7 @@ export function BingoBoard({ size }: BingoBoardProps) {
 
   return (
     <div className="flex flex-col items-center gap-4">
+      <div className="text-center text-lg md:text-xl font-bold p-2 bg-yellow-100 rounded-lg shadow-sm">みつけたらタッチしてね！</div>
       <div
         className="grid gap-1 bg-white max-w-[90vw] md:max-w-[600px] aspect-square"
         style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
