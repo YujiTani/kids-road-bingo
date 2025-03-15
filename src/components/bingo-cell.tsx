@@ -12,11 +12,11 @@ export function BingoCell({ item, image, marked, onClick }: BingoCellProps) {
       onClick={onClick}
       className={`
         relative flex items-center justify-center aspect-square p-2 
-        ${marked ? "bg-green-50" : "bg-white"} 
+        ${marked ? "bg-yellow-200" : "bg-white"} 
         border border-gray-200 rounded-md text-center 
         text-xs sm:text-sm md:text-md font-medium text-gray-800 
         transition-all duration-200 
-        ${marked ? "hover:bg-green-100" : "hover:bg-gray-50"}
+        ${marked ? "hover:bg-yellow-300" : "hover:bg-yellow-50"}
         overflow-hidden
       `}
     >
