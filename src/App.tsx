@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Loader } from "@googlemaps/js-api-loader"
 
-import HelmetComponent from "./helmet"
 import ProgressCar from "@/components/progressCar"
 import RouteInfo from "@/components/routeInfo"
 import TimerProvider from "@/contexts/timerProvider"
@@ -146,7 +145,6 @@ function App() {
 
   return (
     <>
-      <HelmetComponent />
       <div className="relative h-screen w-full bg-gray-100">
         <div ref={mapRef} className="h-full w-full" />
 
