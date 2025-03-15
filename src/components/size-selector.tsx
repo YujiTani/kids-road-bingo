@@ -24,16 +24,16 @@ export function SizeSelector({ onSelectSize, handleClick }: SizeSelectorProps) {
           onClick={startGame}
           className="flex-1 p-4 bg-green-500 text-white font-bold rounded-md flex flex-col items-center hover:bg-green-600 transition-all duration-200 min-w-[120px]"
         >
-          <span className="text-base">ちいさい</span>
+          <span className="text-base">かんたん</span>
           <span className="text-sm">3×3</span>
         </button>
         <button
           type="button"
           data-size="middle"
           onClick={startGame}
-          className="flex-1 p-4 bg-gray-400 text-white font-bold rounded-md flex flex-col items-center cursor-not-allowed opacity-60 min-w-[120px] relative"
+          className="flex-1 p-4 bg-blue-400 text-white font-bold rounded-md flex flex-col items-center cursor-not-allowed opacity-60 min-w-[120px] relative"
         >
-          <span className="text-xl">ふつう</span>
+          <span className="text-xl">たいへん</span>
           <span className="text-sm">4×4</span>
         </button>
       </div>
