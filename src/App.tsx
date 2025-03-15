@@ -145,8 +145,8 @@ function App() {
 
   return (
     <>
-      <div className="relative h-screen w-full bg-gray-100">
-        <div ref={mapRef} className="h-full w-full sm:h-dvh" />
+      <div className="relative h-screen w-full sm:h-dvh bg-gray-100">
+        <div ref={mapRef} className="h-full w-full" />
 
       {routeInfo?.showPopup && (
         <RouteInfo
