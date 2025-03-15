@@ -32,9 +32,8 @@ export function SizeSelector({ onSelectSize, handleClick }: SizeSelectorProps) {
           data-size="middle"
           onClick={startGame}
           className="flex-1 p-4 bg-gray-400 text-white font-bold rounded-md flex flex-col items-center cursor-not-allowed opacity-60 min-w-[120px] relative"
-          disabled={true}
         >
-          <span className="text-xl line-through">ふつう</span>
+          <span className="text-xl">ふつう</span>
           <span className="text-sm">4×4</span>
         </button>
       </div>

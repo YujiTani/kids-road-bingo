@@ -14,6 +14,19 @@ import {
   Ship,
   AnimalDogSanpo,
   AnimalCatMike,
+  LogoMcdibaldo,
+  WeatherRainbow,
+  WeatherKaminari,
+  ObjectTunnel,
+  ObjectTorii,
+  ObjectTettou,
+  ObjectTera,
+  ObjectKouen,
+  ObjectChosuitou,
+  ObjectCircusTent,
+  ObjectFoodHamburger,
+  ObjectFoodPizza,
+  ObjectByouin,
 } from "@/assets/img"
 
 /**
@@ -104,94 +117,74 @@ export const bingoItems: BingoItem[] = [
     image: AnimalCatMike,
     rarity: 3,
   },
-  // {
-  //   id: 13,
-  //   name: "さんぽしてるひと",
-  //   image:"",
-  // },
-  // {
-  //   id: 14,
-  //   name: "ねこ",
-  //   image:"",
-  // },
-  // {
-  //   id: 15,
-  //   name: "まくどなるど",
-  //   image:"",
-  // },
-  // {
-  //   id: 16,
-  //   name: "とりい",
-  //   image:"",
-  // },
-  // {
-  //   id: 17,
-  //   name: "とんねる",
-  //   image:"",
-  // },
-  // {
-  //   id: 18,
-  //   name: "でんしゃ",
-  //   image:"",
-  // },
-  // {
-  //   id: 19,
-  //   name: "ふね",
-  //   image:"",
-  // },
-  // {
-  //   id: 20,
-  //   name: "たくしー",
-  //   image:"",
-  // },
-  // {
-  //   id: 21,
-  //   name: "びょういん",
-  //   image:"",
-  // },
-  // {
-  //   id: 22,
-  //   name: "こうえん",
-  //   image:"",
-  // },
-  // {
-  //   id: 23,
-  //   name: "にじ",
-  //   image:"",
-  // },
-  // {
-  //   id: 24,
-  //   name: "かみなり",
-  //   image:"",
-  // },
-  // {
-  //   id: 25,
-  //   name: "さーかすてんと",
-  //   image:"",
-  // },
-  // {
-  //   id: 26,
-  //   name: "おてら",
-  //   image:"",
-  // },
-  // {
-  //   id: 27,
-  //   name: "てっとう",
-  //   image:"",
-  // },
-  // {
-  //   id: 28,
-  //   name: "ぴざやさん",
-  //   image:"",
-  // },
-  // {
-  //   id: 29,
-  //   name: "ちょすいそう",
-  //   image:"",
-  // },
-  // {
-  //   id: 30,
-  //   name: "まるいがすたんく",
-  //   image:"",
-  // },
+  {
+    name: "まくどなるど",
+    image: LogoMcdibaldo,
+    rarity: 3,
+  },
+  {
+    name: "てんき：にじ",
+    image: WeatherRainbow,
+    rarity: 5,
+  },
+  {
+    name: "てんき：かみなり",
+    image: WeatherKaminari,
+    rarity: 4,
+  },
+  {
+    name: "とんねる",
+    image: ObjectTunnel,
+    rarity: 3,
+  },
+  {
+    name: "とりい",
+    image: ObjectTorii,
+    rarity: 3,
+  },
+  {
+    name: "てっとう",
+    image: ObjectTettou,
+    rarity: 3,
+  },
+  {
+    name: "てら",
+    image: ObjectTera,
+    rarity: 3,
+  },
+  {
+    name: "こうえん",
+    image: ObjectKouen,
+    rarity: 1,
+  },
+  {
+    name: "ちょすいそう",
+    image: ObjectChosuitou,
+    rarity: 2,
+  },
+  {
+    name: "まるいがすたんく",
+    image: ObjectCircusTent,
+    rarity: 4,
+  },
+  {
+    name: "はんばーがーやさん",
+    image: ObjectFoodHamburger,
+    rarity: 3,
+  },
+  {
+    name: "ぴざやさん",
+    image: ObjectFoodPizza,
+    rarity: 3,
+  },
+  {
+    name: "びょういん",
+    image: ObjectByouin,
+    rarity: 3,
+  },
+  {
+    name: "さーかすてんと",
+    image: ObjectCircusTent,
+    rarity: 5,
+  },
 ]

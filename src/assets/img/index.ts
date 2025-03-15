@@ -18,7 +18,6 @@ import CarKoujiShovelcarPng from './car_kouji_shovelcar.png'
 import CarKoujiCranePng from './car_kouji_crane.png'
 import CarKoujiRoadRollerPng from './car_kouji_road_roller.png'
 import CarTankerTruckPng from './car_tanker_truck.png'
-// == ここから
 import CarMixerTruckPng from './car_mixer_truck.png'
 import TrainBluePng from './Train Blue.png'
 import ShipPng from './ship.png'
