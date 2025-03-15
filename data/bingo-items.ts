@@ -27,6 +27,7 @@ import {
   ObjectFoodHamburger,
   ObjectFoodPizza,
   ObjectByouin,
+  ObjectGasTank,
 } from "@/assets/img"
 
 /**
@@ -164,7 +165,7 @@ export const bingoItems: BingoItem[] = [
   },
   {
     name: "まるいがすたんく",
-    image: ObjectCircusTent,
+    image: ObjectGasTank,
     rarity: 4,
   },
   {
