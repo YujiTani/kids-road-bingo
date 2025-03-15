@@ -9,54 +9,101 @@ import {
   CarKoujiCrane,
   CarKoujiRoadRoller,
   CarTankerTruck,
+  CarMixerTruck,
+  TrainBlue,
+  Ship,
+  AnimalDogSanpo,
+  AnimalCatMike,
 } from "@/assets/img"
 
-export const bingoItems = [
+/**
+ * ビンゴアイテムの型
+ * @param name アイテム名
+ * @param image アイテム画像
+ * @param rarity アイテムのレアリティ 1 ~ 5 (5が最もレア)
+ */
+type BingoItem = {
+  name: string
+  image: string
+  rarity: number
+}
+
+export const bingoItems: BingoItem[] = [
   {
     name: "ゆうびんしゃ",
     image: CarMailTruck,
+    rarity: 3,
   },
   {
     name: "とらっく",
     image: CarTruck,
+    rarity: 1,
   },
   {
     name: "きゅうきゅうしゃ",
     image: CarAmbulance,
+    rarity: 4,
   },
   {
     name: "ぱとかー",
     image: CarPolice,
+    rarity: 4,
   },
   {
     name: "ばす",
     image: CarBus,
+    rarity: 1,
   },
   {
     name: "ごみ しゅうしゅうしゃ",
     image: CarGarbageTruck,
+    rarity: 4,
   },
   {
     name: "しょべるかー",
     image: CarKoujiShovelcar,
+    rarity: 4,
   },
   {
     name: "くれーんしゃ",
     image: CarKoujiCrane,
+    rarity: 4,
   },
   {
     name: "ろーどろーらー",
     image: CarKoujiRoadRoller,
+    rarity: 5,
   },
   {
     name: "たんくろーりー",
     image: CarTankerTruck,
+    rarity: 5,
   },
-  // {
-  //   id: 12,
-  //   name: "みきさーしゃ",
-  //   image:"",
-  // },
+  {
+    name: "みきさーしゃ",
+    image: CarMixerTruck,
+    rarity: 5,
+  },
+  {
+    name: "でんしゃ",
+    image: TrainBlue,
+    rarity: 3,
+  },
+  {
+    name: "ふね",
+    image: Ship,
+    rarity: 5,
+  },
+  {
+    name: "いぬとさんぽしてるひと",
+    image: AnimalDogSanpo,
+    rarity: 3,
+  },
+  {
+    name: "ねこ",
+    image: AnimalCatMike,
+    rarity: 3,
+  },
   // {
   //   id: 13,
   //   name: "さんぽしてるひと",
